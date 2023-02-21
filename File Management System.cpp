@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <cerrno>
+//#include <boost/filesystem.hpp>
 using namespace std;
 
 
@@ -60,7 +61,10 @@ int main () {
        system("color 0");
        string textToSave;
        string fileName;
-       cout<<"Enter the fileName in which you want to store data : ";
+    	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+       cout << "        w  ENTER THE FILE NAME IN WHICH YOU WANT TO SAVE DATA   x\n" ;
+       cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
+       cout << "        HERE: ";
        getline(cin,fileName);
        
        cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
@@ -68,9 +72,9 @@ int main () {
        cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
        cout << "        HERE: ";
        getline(cin,textToSave);
-//       ofstream saveFile ("file.txt");
-		textToSave +="\n";//This is for creating a space between two lines
-		ofstream saveFile(("./" + fileName + ".txt").c_str(), ios_base::app);
+
+		textToSave +=" ";//This is for creating a space between two lines
+		ofstream saveFile(("./UserCreatedFiles/" + fileName + ".txt").c_str(), ios_base::app);
 
        saveFile << textToSave;
        cout << "" << endl<< endl<< endl<< endl<< endl<< endl;
@@ -86,15 +90,44 @@ int main () {
      	  system("color 0");
      	  system("cls");
           ifstream loadFile;
-          loadFile.open ("file.txt", ifstream::in);
+          
+//        string filePath = "./";
+//        for (const auto & entry : filesystem::directory_iterator(filePath));
+//        cout << entry.path() << std::endl;
+          
+          string fileName;
+        	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+	       	cout << "        w  ENTER THE FILENAME OF WHICH YOU WANT TO SEE CONTENT   x\n" ;
+	       	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
+	       	cout << "        HERE: ";
+          getline(cin,fileName);
+          
+          loadFile.open (("./UserCreatedFiles/" + fileName + ".txt").c_str(), ifstream::in);
+//          cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+//          cout << "        x     THE FILE CONTAINS THE STRING     x\n" ;
+//          cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
+//          cout << "        ";
+          string str;
+          while (loadFile.good()){
+//               cout << (char) loadFile.get();
+               str+=(char) loadFile.get();
+          }
+          
+        if(str.length()==0){
           cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+          cout << "        x     NO SUCH FILE EXIST    x\n" ;
+          cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
+          cout << "        ";
+		}
+		else{
+		  cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
           cout << "        x     THE FILE CONTAINS THE STRING     x\n" ;
           cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
           cout << "        ";
-          while (loadFile.good()){
-               cout << (char) loadFile.get();
-          }
+          cout<<str<<endl;
           cout << "" << endl<< endl<< endl<< endl<< endl<< endl;
+		} 
+
     	  loadFile.close();
 
     	  system("pause");
