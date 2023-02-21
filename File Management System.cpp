@@ -59,12 +59,19 @@ int main () {
        system("cls");
        system("color 0");
        string textToSave;
+       string fileName;
+       cout<<"Enter the fileName in which you want to store data : ";
+       getline(cin,fileName);
+       
        cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
        cout << "        w  ENTER THE STRING YOU WANT TO SAVE   x\n" ;
        cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
        cout << "        HERE: ";
        getline(cin,textToSave);
-       ofstream saveFile ("file.txt");
+//       ofstream saveFile ("file.txt");
+		textToSave +="\n";//This is for creating a space between two lines
+		ofstream saveFile(("./" + fileName + ".txt").c_str(), ios_base::app);
+
        saveFile << textToSave;
        cout << "" << endl<< endl<< endl<< endl<< endl<< endl;
        saveFile.close();
