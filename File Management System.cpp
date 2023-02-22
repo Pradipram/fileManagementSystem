@@ -12,6 +12,27 @@
 using namespace std;
 vector<string>files;
 
+//Function to show all files created in Userfiles folder
+void fileTillNow(){
+		cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+       	cout << "        x  HERE THESE ARE THE FILES WHICH YOU HAVE CREATED TILL NOW   x\n" ;
+       	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
+       	
+    	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+		DIR *dr;
+   		struct dirent *en;
+   		dr = opendir("./UserCreatedFiles"); //open all directory
+   		if (dr) {
+      		while ((en = readdir(dr)) != NULL) {
+      			cout << "        "<<en->d_name<<endl;
+//         		cout<<" \n"<<en->d_name; //print all directory name
+      		}
+      	closedir(dr); //close all directory
+   		}
+       	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
+}
+
+
 int main () {
 
 
@@ -47,7 +68,7 @@ int main () {
      cout << "          wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
      cout << "          x [1] - Save to a file            x" << endl;
      cout << "          x [2] - View file content         x" << endl;
-     cout << "          x [3] - File Details              x" << endl;
+     cout << "          x [3] - SIZE OF FILE              x" << endl;
      cout << "          x [4] - File Details              x" << endl;
      cout << "          x [5] - Clear the file            x" << endl;
      cout << "          x [6] - Delete the file           x" << endl;
@@ -96,22 +117,7 @@ int main () {
      	  system("cls");
           ifstream loadFile;
           
-	    cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
-       	cout << "        x  HERE THESE ARE THE FILES WHICH YOU HAVE CREATED TILL NOW   x\n" ;
-       	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
-       	
-    	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
-		DIR *dr;
-   		struct dirent *en;
-   		dr = opendir("./UserCreatedFiles"); //open all directory
-   		if (dr) {
-      		while ((en = readdir(dr)) != NULL) {
-      			cout << "        "<<en->d_name<<endl;
-//         		cout<<" \n"<<en->d_name; //print all directory name
-      		}
-      	closedir(dr); //close all directory
-   		}
-       	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
+			fileTillNow();
           
           string fileName;
         	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
@@ -153,9 +159,18 @@ int main () {
       if (option == "3") {
 
      	system("cls");
-     	system("color f");
+     	system("color 0");
+ 		
+ 		fileTillNow();
+ 		string fileName;
+        	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+	       	cout << "        w  ENTER THE FILENAME OF WHICH YOU WANT TO SEE THE SIZE   x\n" ;
+	       	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
+	       	cout << "        HERE: ";
+        getline(cin,fileName);
+ 
         streampos begin,end;
-  		ifstream myfile ("file.txt", ios::binary);
+  		ifstream myfile (("./UserCreatedFiles/" + fileName + ".txt").c_str(), ios::binary);
  		begin = myfile.tellg();
   		myfile.seekg (0, ios::end);
   		end = myfile.tellg();
@@ -180,7 +195,7 @@ int main () {
 		char** argv ;
    		struct stat fileInfo;
    		
-   		
+   		fileTillNow();
    		
    		string fileName;
         cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
@@ -218,7 +233,17 @@ int main () {
      if (option == "5") {
      	system("color 0");
      	system("cls");
- 		std::ofstream ofs ("file.txt", std::ios::out | std::ios::trunc);
+     	
+     	fileTillNow();
+
+		string fileName;
+        cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwWWWWWWWWWWWw" << endl;
+	    cout << "        w  ENTER THE FILENAME OF WHICH YOU WANT TO CLEAR  x\n" ;
+	    cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwWWWWWWWWWWWww\n\n" << endl;
+	    cout << "        HERE: ";
+        getline(cin,fileName);
+     	
+ 		std::ofstream ofs (("./UserCreatedFiles/" + fileName + ".txt").c_str(), std::ios::out | std::ios::trunc);
 		cout << "\n\n\n\n";
  		cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
         cout << "        x      FILE SUCCESSFULLY CLEARED       x\n" ;
@@ -233,7 +258,16 @@ int main () {
      if (option == "6") {
      	system("color 0");
      	system("cls");
-    	std::remove("file.txt");
+     	
+     	fileTillNow();
+     	string fileName;
+        cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+	    cout << "        w  ENTER THE FILENAME YOU WANT TO REMOVE   x\n" ;
+	    cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
+	    cout << "        HERE: ";
+        getline(cin,fileName);
+     	
+    	std::remove(("./UserCreatedFiles/" + fileName + ".txt").c_str());
     	cout << "\n\n\n\n";
  		cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
         cout << "        x      FILE SUCCESSFULLY REMOVED       x\n" ;
