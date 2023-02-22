@@ -6,9 +6,11 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <cerrno>
-//#include <boost/filesystem.hpp>
-using namespace std;
+#include <vector>
+#include <dirent.h>
 
+using namespace std;
+vector<string>files;
 
 int main () {
 
@@ -45,7 +47,7 @@ int main () {
      cout << "          wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
      cout << "          x [1] - Save to a file            x" << endl;
      cout << "          x [2] - View file content         x" << endl;
-     cout << "          x [3] - Obtain file size          x" << endl;
+     cout << "          x [3] - File Details              x" << endl;
      cout << "          x [4] - File Details              x" << endl;
      cout << "          x [5] - Clear the file            x" << endl;
      cout << "          x [6] - Delete the file           x" << endl;
@@ -72,9 +74,12 @@ int main () {
        cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
        cout << "        HERE: ";
        getline(cin,textToSave);
-
+		
+		string filePath = ("./UserCreatedFiles/" + fileName + ".txt");
+		files.push_back(filePath);
+		
 		textToSave +=" ";//This is for creating a space between two lines
-		ofstream saveFile(("./UserCreatedFiles/" + fileName + ".txt").c_str(), ios_base::app);
+		ofstream saveFile(filePath.c_str(), ios_base::app);
 
        saveFile << textToSave;
        cout << "" << endl<< endl<< endl<< endl<< endl<< endl;
@@ -91,9 +96,22 @@ int main () {
      	  system("cls");
           ifstream loadFile;
           
-//        string filePath = "./";
-//        for (const auto & entry : filesystem::directory_iterator(filePath));
-//        cout << entry.path() << std::endl;
+	    cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+       	cout << "        x  HERE THESE ARE THE FILES WHICH YOU HAVE CREATED TILL NOW   x\n" ;
+       	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
+       	
+    	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+		DIR *dr;
+   		struct dirent *en;
+   		dr = opendir("./UserCreatedFiles"); //open all directory
+   		if (dr) {
+      		while ((en = readdir(dr)) != NULL) {
+      			cout << "        "<<en->d_name<<endl;
+//         		cout<<" \n"<<en->d_name; //print all directory name
+      		}
+      	closedir(dr); //close all directory
+   		}
+       	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
           
           string fileName;
         	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
@@ -102,11 +120,7 @@ int main () {
 	       	cout << "        HERE: ";
           getline(cin,fileName);
           
-          loadFile.open (("./UserCreatedFiles/" + fileName + ".txt").c_str(), ifstream::in);
-//          cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
-//          cout << "        x     THE FILE CONTAINS THE STRING     x\n" ;
-//          cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
-//          cout << "        ";
+          loadFile.open (("./UserCreatedFiles/" + fileName + ".txt").c_str(), ifstream::in); 
           string str;
           while (loadFile.good()){
 //               cout << (char) loadFile.get();
@@ -165,8 +179,17 @@ int main () {
         int argc;
 		char** argv ;
    		struct stat fileInfo;
+   		
+   		
+   		
+   		string fileName;
+        cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+	    cout << "        w  ENTER THE FILENAME OF WHICH YOU WANT TO SEE DETAILS   x\n" ;
+	    cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
+	    cout << "        HERE: ";
+        getline(cin,fileName);
 
-   		if (stat("file.txt", &fileInfo) != 0) {
+   		if (stat(("./UserCreatedFiles/" + fileName + ".txt").c_str(), &fileInfo) != 0) {
    		  system("color 04");
    		  cout << "\n\n\n\n\n\n\n";
 	   	  cout << "        wwwwwwwwwwwwwwwwww" << endl;
