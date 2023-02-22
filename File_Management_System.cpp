@@ -8,30 +8,93 @@
 #include <cerrno>
 #include <vector>
 #include <dirent.h>
+#include <conio.h>
+#include <unistd.h>
+#include <stdio.h>
 
 using namespace std;
-vector<string>files;
 
 //Function to show all files created in Userfiles folder
 void fileTillNow(){
+	vector<string> files;
 		cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
        	cout << "        x  HERE THESE ARE THE FILES WHICH YOU HAVE CREATED TILL NOW   x\n" ;
        	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
        	
-    	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
 		DIR *dr;
    		struct dirent *en;
    		dr = opendir("./UserCreatedFiles"); //open all directory
    		if (dr) {
       		while ((en = readdir(dr)) != NULL) {
-      			cout << "        "<<en->d_name<<endl;
+//      			cout << "        "<<en->d_name<<endl;
+				files.push_back(en->d_name);
 //         		cout<<" \n"<<en->d_name; //print all directory name
       		}
       	closedir(dr); //close all directory
    		}
-       	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
+   		if(files.size() == 0 ){
+   			cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+   			cout << "        x     YOUR FOLDER IS EMPTY      x" << endl;
+   			cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
+   			exit(0);
+		}
+		else{
+			cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+			for(int i=0;i<files.size();i++){
+				cout << "        "<<files[i]<<endl;
+			}
+			cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;	
+		}
 }
 
+
+string enterFileType(){
+	string fileType;
+	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+   cout << "        w  ENTER THE FILE TYPE x\n" ;
+   cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
+   cout << "        HERE: ";
+   getline(cin,fileType);
+   return fileType;
+}
+
+void fileOfSpecificFolder(string fileType){
+	vector<string>files;
+	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+   	cout << "        x  HERE THESE ARE THE FILES WHICH YOU HAVE CREATED TILL NOW   x\n" ;
+   	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
+   	
+	DIR *dr;
+	struct dirent *en;
+	dr = opendir(("./UserCreatedFiles/" + fileType + "Files").c_str()); //open all directory
+	if (dr) {
+  		while ((en = readdir(dr)) != NULL) {
+  			files.push_back(en->d_name);
+//  			cout << "        "<<en->d_name<<endl;
+//         		cout<<" \n"<<en->d_name; //print all directory name
+  		}
+  	closedir(dr); //close all directory
+	}
+   	
+   	if(files.size() == 0 ){
+		cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+		cout << "        x     YOUR FOLDER IS EMPTY      x" << endl;
+		cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
+		exit(0);
+	}
+	else{
+		cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+		for(int i=0;i<files.size();i++){
+			cout << "        "<<files[i]<<endl;
+		}
+		cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;	
+	}
+   	
+}
+
+string generateFilePath(string fileType,string fileName){
+	return "./UserCreatedFiles/"+fileType+"Files/"+fileName+"."+fileType;
+}
 
 int main () {
 
@@ -84,23 +147,31 @@ int main () {
        system("color 0");
        string textToSave;
        string fileName;
-    	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+       
+       string fileType;
+       fileType = enterFileType();
+       
+       string filePath = "./UserCreatedFiles/"+fileType+"Files";
+       mkdir(filePath.c_str());
+       
+       system("cls");
+    	cout << "       wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
        cout << "        w  ENTER THE FILE NAME IN WHICH YOU WANT TO SAVE DATA   x\n" ;
-       cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
+       cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
        cout << "        HERE: ";
        getline(cin,fileName);
-       
-       cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
-       cout << "        w  ENTER THE STRING YOU WANT TO SAVE   x\n" ;
-       cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
+
+       system("cls");
+       cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+       cout << "        w  ENTER THE CONTENT OF THE FILES  x\n" ;
+       cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
        cout << "        HERE: ";
        getline(cin,textToSave);
 		
-		string filePath = ("./UserCreatedFiles/" + fileName + ".txt");
-		files.push_back(filePath);
+//		string filePath = ("./UserCreated/" + fileName + ".txt");
 		
 		textToSave +=" ";//This is for creating a space between two lines
-		ofstream saveFile(filePath.c_str(), ios_base::app);
+		ofstream saveFile((filePath +"/"+ fileName + "." + fileType).c_str(), ios_base::app);
 
        saveFile << textToSave;
        cout << "" << endl<< endl<< endl<< endl<< endl<< endl;
@@ -118,15 +189,19 @@ int main () {
           ifstream loadFile;
           
 			fileTillNow();
+			string fileType;
+       		fileType = enterFileType();
+       		system("cls");
+       		fileOfSpecificFolder(fileType);
           
           string fileName;
-        	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
+        	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
 	       	cout << "        w  ENTER THE FILENAME OF WHICH YOU WANT TO SEE CONTENT   x\n" ;
-	       	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
+	       	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
 	       	cout << "        HERE: ";
           getline(cin,fileName);
           
-          loadFile.open (("./UserCreatedFiles/" + fileName + ".txt").c_str(), ifstream::in); 
+          loadFile.open (("./UserCreatedFiles/" + fileType + "Files/" + fileName + "." + fileType ).c_str(), ifstream::in); 
           string str;
           while (loadFile.good()){
 //               cout << (char) loadFile.get();
@@ -138,8 +213,10 @@ int main () {
           cout << "        x     NO SUCH FILE EXIST    x\n" ;
           cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
           cout << "        ";
+          exit(0);
 		}
 		else{
+			system("cls");;
 		  cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
           cout << "        x     THE FILE CONTAINS THE STRING     x\n" ;
           cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
@@ -161,16 +238,22 @@ int main () {
      	system("cls");
      	system("color 0");
  		
- 		fileTillNow();
+		fileTillNow();
+		string fileType;
+   		fileType = enterFileType();
+   		system("cls");
+   		fileOfSpecificFolder(fileType);
+   		
  		string fileName;
         	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
 	       	cout << "        w  ENTER THE FILENAME OF WHICH YOU WANT TO SEE THE SIZE   x\n" ;
 	       	cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
 	       	cout << "        HERE: ";
         getline(cin,fileName);
- 
+ 		
+ 		system("cls");
         streampos begin,end;
-  		ifstream myfile (("./UserCreatedFiles/" + fileName + ".txt").c_str(), ios::binary);
+  		ifstream myfile (("./UserCreatedFiles/" + fileType + "Files/"+ fileName + "." + fileType).c_str(), ios::binary);
  		begin = myfile.tellg();
   		myfile.seekg (0, ios::end);
   		end = myfile.tellg();
@@ -179,7 +262,12 @@ int main () {
         cout << "        x            THE FILE SIZE IS          x\n" ;
         cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
         cout << "\n\n\n\t\t\t";
-  		cout << (end-begin) << " bytes.\n";
+        if(end-begin == 0){
+        	cout<<"YOUR FILE IS EMPTY "<<endl;
+		}
+		else{
+			cout << (end-begin) << " bytes.\n";	
+		}
 		cout << "" << endl<< endl<< endl<< endl<< endl;
 
   		system("pause");
@@ -196,6 +284,10 @@ int main () {
    		struct stat fileInfo;
    		
    		fileTillNow();
+		string fileType;
+   		fileType = enterFileType();
+   		system("cls");
+   		fileOfSpecificFolder(fileType);
    		
    		string fileName;
         cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
@@ -204,7 +296,7 @@ int main () {
 	    cout << "        HERE: ";
         getline(cin,fileName);
 
-   		if (stat(("./UserCreatedFiles/" + fileName + ".txt").c_str(), &fileInfo) != 0) {
+   		if (stat(generateFilePath(fileType,fileName).c_str(), &fileInfo) != 0) {
    		  system("color 04");
    		  cout << "\n\n\n\n\n\n\n";
 	   	  cout << "        wwwwwwwwwwwwwwwwww" << endl;
@@ -235,6 +327,10 @@ int main () {
      	system("cls");
      	
      	fileTillNow();
+		string fileType;
+   		fileType = enterFileType();
+   		system("cls");
+   		fileOfSpecificFolder(fileType);
 
 		string fileName;
         cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwWWWWWWWWWWWw" << endl;
@@ -243,7 +339,7 @@ int main () {
 	    cout << "        HERE: ";
         getline(cin,fileName);
      	
- 		std::ofstream ofs (("./UserCreatedFiles/" + fileName + ".txt").c_str(), std::ios::out | std::ios::trunc);
+ 		std::ofstream ofs (generateFilePath(fileType,fileName).c_str(), std::ios::out | std::ios::trunc);
 		cout << "\n\n\n\n";
  		cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
         cout << "        x      FILE SUCCESSFULLY CLEARED       x\n" ;
@@ -260,14 +356,19 @@ int main () {
      	system("cls");
      	
      	fileTillNow();
+		string fileType;
+   		fileType = enterFileType();
+   		system("cls");
+   		fileOfSpecificFolder(fileType);
      	string fileName;
+     	
         cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
 	    cout << "        w  ENTER THE FILENAME YOU WANT TO REMOVE   x\n" ;
 	    cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n\n" << endl;
 	    cout << "        HERE: ";
         getline(cin,fileName);
      	
-    	std::remove(("./UserCreatedFiles/" + fileName + ".txt").c_str());
+    	std::remove(generateFilePath(fileType,fileName).c_str());
     	cout << "\n\n\n\n";
  		cout << "        wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww" << endl;
         cout << "        x      FILE SUCCESSFULLY REMOVED       x\n" ;
